@@ -7,7 +7,7 @@ const {
 } = require('../controllers/url');
 
 router.post('/', handleCreateShortURL);
-router.get('/:id', handleGetRedirectURL);
+router.get('/redirect/:id', handleGetRedirectURL);
 
 router.get('/analytics/:id', handleGetAnalytics);
 
