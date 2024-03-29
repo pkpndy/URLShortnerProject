@@ -3,7 +3,7 @@ const URL = require('./models/url');
 const path = require('path');
 const {connectMongoDB} = require('./connection')
 const cookieParser = require('cookie-parser');
-const {restrictToLoggedInUserOnly} = require('./middlewares/auth')
+const {restrictToLoggedInUserOnly, checkAuth} = require('./middlewares/auth')
 
 const app = express();
 const PORT = 8001;
@@ -31,7 +31,7 @@ app.get('/test', async  (req, res) => {
 //middlware in the middle here will basically run before
 //passing any request to the urlRoute
 app.use('/url', restrictToLoggedInUserOnly, urlRoute);
-app.use('/', staticRoute);
+app.use('/', checkAuth, staticRoute);
 app.use('/user', userRoute);
 
 app.listen(PORT, () => {console.log(`server started at PORT: ${PORT}`)});
