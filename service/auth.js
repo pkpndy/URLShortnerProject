@@ -6,6 +6,7 @@ function setUser(user){
     {
         id: user._id,
         email: user.email,
+        role: user.role
     }, 
     secret);
 }

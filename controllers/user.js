@@ -19,7 +19,8 @@ async function handleUserLogin(req, res) {
     });
     const token = setUser(userFound);
     // the first argument will be the name for the cookie
-    res.cookie("uid", token);
+    res.cookie("token", token);
+    console.log("completing handleUserLogin");
     return res.redirect('/');
 }
 

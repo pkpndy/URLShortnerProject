@@ -3,7 +3,7 @@ const URL = require('./models/url');
 const path = require('path');
 const {connectMongoDB} = require('./connection')
 const cookieParser = require('cookie-parser');
-const {restrictToLoggedInUserOnly, checkAuth} = require('./middlewares/auth')
+const {checkForAuthentication, restrictTo} = require('./middlewares/auth')
 
 const app = express();
 const PORT = 8001;
@@ -22,6 +22,7 @@ app.set("views", path.resolve("./views"));
 app.use(express.json()); //to support json data
 app.use(express.urlencoded({extended: false})); //to support form
 app.use(cookieParser());
+app.use(checkForAuthentication);
 
 app.get('/test', async  (req, res) => {
     const allUrls = await URL.find({});
@@ -30,8 +31,8 @@ app.get('/test', async  (req, res) => {
 
 //middlware in the middle here will basically run before
 //passing any request to the urlRoute
-app.use('/url', restrictToLoggedInUserOnly, urlRoute);
-app.use('/', checkAuth, staticRoute);
+app.use('/url', restrictTo(["NORMAL"]) , urlRoute);
+app.use('/', staticRoute);
 app.use('/user', userRoute);
 
 app.listen(PORT, () => {console.log(`server started at PORT: ${PORT}`)});
